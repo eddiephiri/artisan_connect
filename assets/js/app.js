@@ -1,6 +1,8 @@
 // If you want to use Phoenix channels, run `mix help phx.gen.channel`
 // to get started and then uncomment the line below.
 // import "./user_socket.js"
+import "soft-ui-dashboard-tailwind.js"
+import "soft-ui-dashboard-tailwind.min.js"
 
 // You can include dependencies in two ways.
 //

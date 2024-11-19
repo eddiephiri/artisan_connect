@@ -3,7 +3,7 @@ import Config
 # Configure your database
 config :artisan_connect, ArtisanConnect.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "5c0rp1027",
   hostname: "localhost",
   database: "artisan_connect_dev",
   stacktrace: true,
