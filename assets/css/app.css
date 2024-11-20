@@ -19,3 +19,45 @@
 transform: scale(1.05);
 transition: transform 0.3s ease-in-out;
 }
+
+/* Add these custom styles for the carousel */
+@layer components {
+  .product-carousel-container {
+    @apply relative max-w-6xl mx-auto px-10;
+  }
+
+  .product-carousel {
+    @apply relative overflow-hidden;
+  }
+
+  .product-card {
+    @apply hidden p-4 border border-gray-200 rounded-lg shadow-sm transition-all duration-300;
+  }
+
+  .product-card.active {
+    @apply block animate-fade-in;
+  }
+
+  .prev-btn, .next-btn {
+    @apply absolute top-1/2 -translate-y-1/2 bg-white border border-gray-200 
+           p-3 rounded-full cursor-pointer shadow-md hover:bg-gray-50 
+           transition-colors duration-200 z-10;
+  }
+
+  .prev-btn {
+    @apply left-0;
+  }
+
+  .next-btn {
+    @apply right-0;
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.3s ease-in-out;
+  }
+}
