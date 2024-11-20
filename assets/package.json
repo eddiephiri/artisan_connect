@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@tailwindcss/forms": "^0.5.9",
+    "perfect-scrollbar": "^1.5.6"
+  }
+}

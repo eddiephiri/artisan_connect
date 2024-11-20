@@ -1,6 +1,8 @@
 defmodule ArtisanConnectWeb.Router do
   use ArtisanConnectWeb, :router
 
+  import ArtisanConnectWeb.UserAuth
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -14,10 +16,21 @@ defmodule ArtisanConnectWeb.Router do
     plug :accepts, ["json"]
   end
 
+  # Remove or comment out the default scope that contains the page route
+  # scope "/", ArtisanConnectWeb do
+  #   pipe_through :browser
+  #   get "/", PageController, :home
+  # end
+
+  # Add our new routes
   scope "/", ArtisanConnectWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/", LandingLive.Index, :index
+
+    live "/users/register", UserRegistrationLive, :new
+    live "/users/log_in", UserLoginLive, :new
+    post "/users/log_in", UserSessionController, :create
   end
 
   # Other scopes may use custom stacks.
@@ -40,5 +53,39 @@ defmodule ArtisanConnectWeb.Router do
       live_dashboard "/dashboard", metrics: ArtisanConnectWeb.Telemetry
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
+  end
+
+  ## Authentication routes
+
+  scope "/", ArtisanConnectWeb do
+    pipe_through [:browser, :redirect_if_user_is_authenticated]
+
+    live "/", LandingLive.Index, :index
+
+    live "/users/register", UserRegistrationLive, :new
+    live "/users/login", UserLoginLive, :new
+    post "/users/login", UserSessionController, :create
+    get "/users/reset_password", UserResetPasswordController, :new
+    post "/users/reset_password", UserResetPasswordController, :create
+    get "/users/reset_password/:token", UserResetPasswordController, :edit
+    put "/users/reset_password/:token", UserResetPasswordController, :update
+  end
+
+  scope "/", ArtisanConnectWeb do
+    pipe_through [:browser, :require_authenticated_user]
+
+    get "/users/settings", UserSettingsController, :edit
+    put "/users/settings", UserSettingsController, :update
+    get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
+  end
+
+  scope "/", ArtisanConnectWeb do
+    pipe_through [:browser]
+
+    delete "/users/log_out", UserSessionController, :delete
+    get "/users/confirm", UserConfirmationController, :new
+    post "/users/confirm", UserConfirmationController, :create
+    get "/users/confirm/:token", UserConfirmationController, :edit
+    post "/users/confirm/:token", UserConfirmationController, :update
   end
 end

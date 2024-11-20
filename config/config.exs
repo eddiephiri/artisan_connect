@@ -20,7 +20,8 @@ config :artisan_connect, ArtisanConnectWeb.Endpoint,
     layout: false
   ],
   pubsub_server: ArtisanConnect.PubSub,
-  live_view: [signing_salt: "unV6LeMb"]
+  live_view: [signing_salt: "unV6LeMb"],
+  static_paths: ~w(assets fonts images js css vendor favicon.ico robots.txt)
 
 # Configures the mailer
 #
@@ -64,3 +65,7 @@ config :phoenix, :json_library, Jason
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
+
+config :artisan_connect, :auth,
+  user_registration_enabled: true,
+  require_email_confirmation: true
